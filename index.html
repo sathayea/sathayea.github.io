@@ -1,0 +1,137 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>
+  Welcome!
+  </title>
+  <link
+  rel = "stylesheet"
+  type = "text/css"
+  href = "MyStyle2.css"
+  >
+
+
+</head>
+<!--<body onkeypress = "processkeypress(event)">-->
+<body onkeypress = "processkeypress(event)">
+  <div class = "a" height = "200px">
+    <h1>
+    Welcome to ME!
+    </h1>
+    <p>
+    My name is Aneesh, I am 14 years old, and I am in 9th grade.
+    </p>
+  </div>
+  <div>
+    <p class = "b">
+    Here is a game that I made for everyone. <br/>
+    All you have to do is move the black "net," using the a and d keys,
+    <br/> so that the ball falls into it. <br/>
+    If the ball touches the bottom, then it's <br/>
+  <span>GAME OVER</span>
+    </p>
+    <p id="score">Score <span>0</span></p>
+  </div>
+  <div class = "b">
+    <svg id = "svg" width = "800" height = "400">
+      <circle id = "c" cx = "400" cy = "50" r = "10" stroke = "orange"
+      stroke-width = "1" fill = "orange" id = "c" />
+      <rect  id = "r" x = "385" y = "350" width = "30" height = "20"
+      style = "fill: Black; Stroke: Black; stroke-width: '2';" />
+      <rect x = "0" y = "390" width = "800" height = "10"
+      style = "fill: red; Stroke: red; stroke-width: '2';" />
+    </svg>
+    <br/>
+    <button type="button" id = "bn" onclick="interval()">Start game</button>
+  </div>
+</body>
+<script type="text/javascript">
+var score = 0;
+
+  //function to interpret key presses
+  function processkeypress(e) {
+    var whichKey = String.fromCharCode(e.charCode);
+    if (whichKey == "a") moveHorizontal(-15);
+    if (whichKey == "d") moveHorizontal(15);
+    checkBox();
+  }
+  //function to change position of rectdangle
+  function moveHorizontal(delta){
+    document.getElementById("r").x.baseVal.value += delta;
+    checkBox();
+  }
+  //function to keep moving after 100 milliseconds
+  function interval(){
+    setInterval(moveVertical, 70);
+  }
+  //function to return ball to top
+  function returnBall(){
+    document.getElementById("c").cy.baseVal.value = 50;
+    document.getElementById("c").cx.baseVal.value =  Math.floor(Math.random()*(750 - 50 + 1) + 10);
+}
+  //var exc_y = document.getElementById("c").cy.baseVal.value;
+  function checkGame(){
+    var exec_y = document.getElementById("c").cy.baseVal.value;
+    console.log("Inside check Game");
+    console.log(exec_y);
+    var svg = document.getElementById("svg");
+    if(exec_y >= 399)
+    {
+      console.log("exec_y greater");
+      svg.style.display = "block";
+      document.write("GAME OVER");
+  }
+}
+//function to change postition of ball by increment of 10 px
+function moveVertical(){
+  document.getElementById("c").cy.baseVal.value += 10;
+  checkBox();
+}
+  //check to hit box
+function checkBox(){
+    var rect = document.getElementById("r");
+    var x = rect.x.baseVal.value;
+    var y = rect.y.baseVal.value;
+    var circle = document.getElementById("c");
+    var cy = circle.cy.baseVal.value;
+    var cx = circle.cx.baseVal.value;
+    // console.log("Rectangle x ="+x+" Circle cx="+cx);
+    // console.log("Rectangle y ="+y+ "Circle cy=" +cy);
+
+  /*
+  DEBUGGER
+  var a=document.getElementById("c").cx.baseVal.value; // extract value of circle's x coord
+  console.log("a="+a); //log above
+  console.log("Variable type="+(typeof a)); //log if "a" is a number
+  //var num=Number.parseInt(a);
+  console.log("Variable type="+(typeof num)); //log if it is still a number
+  console.log("Num=",a); log a
+  var add=a+10;
+  console.log("Add=",add); */ //log a
+
+
+    var bh = (document.getElementById("c").cx.baseVal.value);
+    var lc = (document.getElementById("r").x.baseVal.value);
+    var rc = (document.getElementById("r").x.baseVal.value + 30);
+    //extract abs. val. of x coords. of each
+    // console.log("Diff1 =" + diff1); //log above
+    var diff2 = Math.abs(document.getElementById("c").cy.baseVal.value -document.getElementById("r").y.baseVal.value);
+    //extract abs. val. of y coords. of each
+    // console.log("Diff2 =" + diff2); //log above
+
+    if((bh >= lc) && (bh <= rc) && (diff2 <=6 )){ //if the ball collides with the box
+         // console.log("Collided"); //check above
+
+      //function to return ball to top
+        score += 1;
+        document.querySelector('#score span').innerHTML = score;
+        returnBall();
+    } else {//if it doesn't - keep going downward
+      //function to keep moving after 100 milliseconds
+       // console.log("They have not collided yet");
+        //interval();
+    }
+    checkGame();
+  }
+</script>
+</html>
